@@ -34,8 +34,8 @@ Relations are the users connection with an object. If you wanted to add a like b
 
 #### Relation Tracking
 * **Unary Operation**: This is an item that can only have one other state, such as a single upvote or a "like". Great for giving posts a fun element of competition.
-* **Binary Operaions**: This is an item that can be voted up, voted down. Great for comments or content. Computes the Lower bound of Wilson score confidence interval for a Bernoulli parameter for Popularity
-* **Multary Operations**: This is an item that can have a variable rating, for instance a star system 1-5 or a movie rating 1-10. Computes the Bayesian Average for Popularity
+* **Binary Operaions**: This is an item that can be voted up, voted down. Great for comments or content. 
+* **Multary Operations**: This is an item that can have a variable rating, for instance a star system 1-5 or a movie rating 1-10.
 
 
 #The Code
@@ -58,12 +58,12 @@ type( $itemType )
 ```php 
 attribute( $key )
 ```
-* `$key`:  String - A key (as in key/value) to record data as. i.e. "impressions" or "cumComments"
+* `$key`:  String - A key (as in key/value) to record data as. i.e. "impressions" or "404s"
 
 ```php 
 item( $itemID, $timestamp = false )
 ```
-* `$itemID`: String - A unique identifier for the object you would like to track. i.e. (setting 5 as the `itemID` with "post" set as the `itemType` infers that we are referencing Post ID#5)
+* `$itemID`: String - A unique identifier for the object you would like to track. i.e. (setting 5 as the `itemID` with "post" set as the `itemType` infers that we are referencing Post ID #5). Int ID's will work best in this field.
 * `$timestamp`: Int - If tracking the `relation` of an object, the objects timestamp must be passed as an Int to accurately determine the Popularity of the object
 
 ```php 
@@ -71,7 +71,7 @@ relation( $type, $user = false, $value = false )
 ```
 * `$type`: String - Defines the relation type. Accepted values are `"unary"`, `"binary"`, or `"multary"`
 * `$user`: Int - The ID of the user that will be relating to our object
-* `#value`: Varies - The `value` parameter takes in a Boolean or an Int. More information about when certain types of values are to be used can be found below.
+* `$value`: Varies - The `value` parameter takes in a Boolean or an Int. More information about when certain types of values are to be used can be found below.
 
 ```php 
 track()
@@ -79,7 +79,7 @@ track()
 * Calling `track` records the data we've compiled from the functions above.
 
 ```php 
-get( $limt = false )
+get( $limit = false )
 ```
 * Calling `get` retrieves the data we've compiled from the functions above.
 * `$limit`: Int - Limit the number of items returned
@@ -175,11 +175,11 @@ When a user on Facebook "Likes" a post, the form a Unary relationship with that 
 ```php
 $shadow->type( "post" )
        ->item( 5 )
-       ->social( "unary", 80, true )
+       ->relation( "unary", 80, true )
        ->track();
 ```
 
-The `social` function takes in three parameters, a relation type, the user ID, and the value for the relation.
+The `relation` function takes in three parameters, a relation type, the user ID, and the value for the relation.
 
 Unary Relations may only have a value of `True` or `False`. If `True`, a relation will be formed if one does not exist. If `False`, the relation will be destroyed.
 
@@ -474,9 +474,9 @@ Array
 Popularity = (likes – 1) / (time_in_hrs + 2)^1.5
 ```
 This algorithm is derived from Y Combinator's Hacker News.
-
+<hr />
 ### Binary Algorithm: <a href="http://www.evanmiller.org/how-not-to-sort-by-average-rating.html" target="_blank">Lower bound of Wilson Score Confidence Interval for a Bernoulli Parameter</a>
 <img src="http://i.imgur.com/1ePMCtY.png">
-
+<hr />
 ### Multary Algorithm: <a href="http://en.wikipedia.org/wiki/Bayesian_average" target="_blank">Bayesian Average</a>
 Determines the Bayesian Average, the mean of a poptulation with data from the populations being used as a way to minimize deviations/randomness
