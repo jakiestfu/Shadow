@@ -117,7 +117,7 @@ Sample Return (if `track` was called 180 times)
 ```
 
 ### Complex Operations
-Complex operations are for keeping a count of a multiple sub-attributes of an object.
+Complex operations are for keeping a count of a multiple sub-attributes of an object. To define an attribute as a complex one, simply add a slash in the nave with it's respective value following after the key.
 
 **Tracking**
 ```php
@@ -169,7 +169,7 @@ In the above example, we can use the tracked information to deduce that there we
 Relation Operations are used to track the relationship between a user and an object in a social setting.
 
 ### Unary Operations
-When a user on Facebook "Likes" a post, the form a Unary relationship with that post, **a relationship in which there can only be one other state than the default state**. The user can either "Like" the post or not.
+When a user on <a href="https://www.facebook.com/" target="_blank">Facebook</a> "Likes" a post, the form a Unary relationship with that post, **a relationship in which there can only be one other state than the default state**. The user can either "Like" the post or not.
 
 **Tracking**
 ```php
@@ -190,11 +190,11 @@ In the example above, this will store a relation in our database that User #80 "
 ```php
 $shadow->type( "post" )
        ->item( 5 )
-       ->social( "unary", 80 )
+       ->relation( "unary", 80 )
        ->get();
 ```
 
-Change the `track` function to the `get` function, and omit the third parameter `$value` from the `social` function and the users relation to the object will be returned.
+Change the `track` function to the `get` function, and omit the third parameter `$value` from the `relation` function and the users relation to the object will be returned.
 
 Sample Return (if the User #80 "Liked" Post #5)
 ```php
@@ -205,11 +205,11 @@ true
 ```php
 $shadow->type( "post" )
        ->item( 5 )
-       ->social( "unary" )
+       ->relation( "unary" )
        ->get();
 ```
 
-If you now omit the second parameter `$userID` from the `social` function ange `get` the data, an int will be returned representing the number of "Likes" Post #5 has.
+If you now omit the second parameter `$userID` from the `relation` function ange `get` the data, an int will be returned representing the number of "Likes" Post #5 has.
 
 Sample Return (15 likes)
 ```php
@@ -219,7 +219,7 @@ Sample Return (15 likes)
 **Getting Popular Unary Objects**
 ```php
 $shadow->type( "post" )
-       ->social( "unary" )
+       ->relation( "unary" )
        ->get();
 ```
 
@@ -260,42 +260,42 @@ Array
 ```
 
 ### Binary Operations
-When a user "upvotes" or "downvotes" a submission on Reddit, the user forms a Binary relationship with that submission, **a relationship in which there can only be one of two states other than the default state**. The user can either "Upvote" or "Downvote" the post. In the following examples, we will use "Comments" as a `$postType`.
+When a user "upvotes" or "downvotes" a submission on <a href="http://reddit.com" target="-blank">Reddit</a>, the user forms a Binary relationship with that submission, **a relationship in which there can only be one of two states other than the default state**. The user can either "Upvote" or "Downvote" the post. In the following examples, we will use "Comments" as a `$postType`.
 
 **Tracking**
 ```php
 $shadow->type( "comment" )
        ->item( 10 )
-       ->social( "binary", 80, true )
+       ->relation( "binary", 80, true )
        ->track();
 ```
 
-The `social` function's first parameter is now "binary", and it's value is `True`.
+The `relation` function's first parameter is now "binary", and it's value is `True`.
 
 Binary Relations Values will only accept `True`, `False`, or `null`. If `True`, a "positive" relation will be formed between the user and the object. If `False`, a "negative" relation will be formed. If `null`, any type of relation (if any) will be destroyed.
 
-In the example above, this will store a relation in our database that User #80 "Upvoted" Comment #10. If the third parameter in `social` were `false`, User #80 would have "Downvoted" Comment #10;
+In the example above, this will store a relation in our database that User #80 "Upvoted" Comment #10. If the third parameter in `relation` were `false`, User #80 would have "Downvoted" Comment #10;
 
 
 **Getting Users Relation to Binary Object**
 ```php
 $shadow->type( "comment" )
        ->item( 10 )
-       ->social( "binary", 80 )
+       ->relation( "binary", 80 )
        ->get();
 ```
 
-Change the `track` function to the `get` function, and omit the third parameter `$value` from the `social` function and the users relation to the object will be returned.
+Change the `track` function to the `get` function, and omit the third parameter `$value` from the `relation` function and the users relation to the object will be returned.
 
-Sample Return (if the User #80 "Downvoted" Post #10)
+Sample Return (if the User #80 "Downvoted" Comment #10)
 ```php
 false
 ```
-Sample Return (if the User #80 "Upvoted" Post #10)
+Sample Return (if the User #80 "Upvoted" Comment #10)
 ```php
 true
 ```
-Sample Return (if the User #80 has no relation with Post #10)
+Sample Return (if the User #80 has no relation with Comment #10)
 ```php
 null
 ```
@@ -305,13 +305,13 @@ null
 ```php
 $shadow->type( "comment" )
        ->item( 10 )
-       ->social( "binary" )
+       ->relation( "binary" )
        ->get();
 ```
 
-If you now omit the second parameter `$userID` from the `social` function ange `get` the data, an int will be returned representing the number of "Likes" Post #5 has.
+If you now omit the second parameter `$userID` from the `relation` function ange `get` the data, an array of positive and negative votes will be shown for Comment # 10
 
-Sample Return (9 "Upvote" and 3 "Downvotes")
+Sample Return (9 "Upvotes" and 3 "Downvotes")
 ```php
 Array
 (
@@ -323,7 +323,7 @@ Array
 **Getting Popular Binary Objects**
 ```php
 $shadow->type( "comment" )
-       ->social( "binary" )
+       ->relation( "binary" )
        ->get();
 ```
 
@@ -366,17 +366,17 @@ Array
 
 
 ### Multary Operations
-When a user rates a movie on IMDB, the user forms a Multary relationship with that movie, **a relationship in which there can be more than two states other than the default state**. The user can "rate" a movie as 3, 7, or even 20. In the following examples, we will use "Movies" as a `$postType`.
+When a user rates a movie on <a href="http://www.imdb.com/" target="_blank">IMDB</a>, the user forms a Multary relationship with that movie, **a relationship in which there can be more than two states other than the default state**. The user can "rate" a movie as 3, 7, or even 20. In the following examples, we will use "Movies" as a `$postType`.
 
 **Tracking**
 ```php
 $shadow->type( "movie" )
        ->item( 15 )
-       ->social( "multary", 80, 3 )
+       ->relation( "multary", 80, 3 )
        ->track();
 ```
 
-The `social` function's first parameter is now "multary", and it's value is `3`.
+The `relation` function's first parameter is now "multary", and it's value is `3`.
 
 Multary Relations Values will only accept an `Int`, `false`, or `null`. If the value is an `Int`, a relation will be formed between the user and object with the `Int` as the value for the "rating". If `false` or `null`, any type of relation (if any) will be destroyed.
 
@@ -386,11 +386,11 @@ In the example above, this will store a relation in our database that User #80 "
 ```php
 $shadow->type( "movie" )
        ->item( 15 )
-       ->social( "multary", 80 )
+       ->relation( "multary", 80 )
        ->get();
 ```
 
-Change the `track` function to the `get` function, and omit the third parameter `$value` from the `social` function and the users relation to the object will be returned.
+Change the `track` function to the `get` function, and omit the third parameter `$value` from the `relation` function and the users relation to the object will be returned.
 
 Sample Return (if the User #80 "voted" a 3 on Movie #15)
 ```php
@@ -406,11 +406,11 @@ null
 ```php
 $shadow->type( "movie" )
        ->item( 15 )
-       ->social( "multary" )
+       ->relation( "multary" )
        ->get();
 ```
 
-If you now omit the second parameter `$userID` from the `social` function and `get` the data, an int will be returned representing the ratings Movie #15 has
+If you now omit the second parameter `$userID` from the `relation` function and `get` the data, an int will be returned representing the ratings Movie #15 has
 
 Sample Return (81 "votes" totaling up to 253 with an average vote of 3)
 ```php
@@ -425,7 +425,7 @@ Array
 **Getting Popular Multary Objects**
 ```php
 $shadow->type( "comment" )
-       ->social( "multary" )
+       ->relation( "multary" )
        ->get();
 ```
 
