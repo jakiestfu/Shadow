@@ -466,3 +466,17 @@ Array
         )
 )
 ```
+
+## Popularity Algorithms
+
+### Unary Algorithm: Custom
+```
+Popularity = (likes – 1) / (time_in_hrs + 2)^1.5
+```
+This algorithm is derived from Y Combinator's Hacker News.
+
+### Binary Algorithm: <a href="http://www.evanmiller.org/how-not-to-sort-by-average-rating.html" target="_blank">Lower bound of Wilson Score Confidence Interval for a Bernoulli Parameter</a>
+<img src="http://i.imgur.com/1ePMCtY.png">
+
+### Multary Algorithm: <a href="http://en.wikipedia.org/wiki/Bayesian_average" target="_blank">Bayesian Average</a>
+Determines the Bayesian Average, the mean of a poptulation with data from the populations being used as a way to minimize deviations/randomness
