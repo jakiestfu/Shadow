@@ -258,3 +258,211 @@ Array
 
 )
 ```
+
+### Binary Operations
+When a user "upvotes" or "downvotes" a submission on Reddit, the user forms a Binary relationship with that submission, **a relationship in which there can only be one of two states other than the default state**. The user can either "Upvote" or "Downvote" the post. In the following examples, we will use "Comments" as a `$postType`.
+
+**Tracking**
+```php
+$shadow->type( "comment" )
+       ->item( 10 )
+       ->social( "binary", 80, true )
+       ->track();
+```
+
+The `social` function's first parameter is now "binary", and it's value is `True`.
+
+Binary Relations Values will only accept `True`, `False`, or `null`. If `True`, a "positive" relation will be formed between the user and the object. If `False`, a "negative" relation will be formed. If `null`, any type of relation (if any) will be destroyed.
+
+In the example above, this will store a relation in our database that User #80 "Upvoted" Comment #10. If the third parameter in `social` were `false`, User #80 would have "Downvoted" Comment #10;
+
+
+**Getting Users Relation to Binary Object**
+```php
+$shadow->type( "comment" )
+       ->item( 10 )
+       ->social( "binary", 80 )
+       ->get();
+```
+
+Change the `track` function to the `get` function, and omit the third parameter `$value` from the `social` function and the users relation to the object will be returned.
+
+Sample Return (if the User #80 "Downvoted" Post #10)
+```php
+false
+```
+Sample Return (if the User #80 "Upvoted" Post #10)
+```php
+true
+```
+Sample Return (if the User #80 has no relation with Post #10)
+```php
+null
+```
+
+
+**Getting Binary Objects Social Value**
+```php
+$shadow->type( "comment" )
+       ->item( 10 )
+       ->social( "binary" )
+       ->get();
+```
+
+If you now omit the second parameter `$userID` from the `social` function ange `get` the data, an int will be returned representing the number of "Likes" Post #5 has.
+
+Sample Return (9 "Upvote" and 3 "Downvotes")
+```php
+Array
+(
+    [positive] => 9,
+    [negative] => 3
+)
+```
+
+**Getting Popular Binary Objects**
+```php
+$shadow->type( "comment" )
+       ->social( "binary" )
+       ->get();
+```
+
+If you now omit the `item` function (which specifies a specific object), a list of the popular `$itemType`'s ("comment" in this case) will be returned.
+
+Sample Return: 3 "Comments", stored in the `objects` array. `id` represents the Posts ID, `positive` is the number of "upvotes", `negative` is the number of "downvotes" and `rank` is the Social Rank of objects of type "comment" that have a Binary relation
+```php
+Array
+(
+    [count] => 3
+    [type] => comment
+    [objects] => Array
+        (
+            [0] => Array
+                (
+                    [id] => object-idfs
+                    [positive] => 14
+                    [negative] => 3
+                    [rank] => 0.366543291473893
+                )
+
+            [1] => Array
+                (
+                    [id] => object-id
+                    [positive] => 14
+                    [negative] => 7
+                    [rank] => 0.2845286548008661
+                )
+                
+            [3] => Array
+                (
+                    [id] => object-idfs
+                    [positive] => 21
+                    [negative] => 94
+                    [rank] => 0.1965433291273893
+                )
+        )
+)
+```
+
+
+### Multary Operations
+When a user rates a movie on IMDB, the user forms a Multary relationship with that movie, **a relationship in which there can be more than two states other than the default state**. The user can "rate" a movie as 3, 7, or even 20. In the following examples, we will use "Movies" as a `$postType`.
+
+**Tracking**
+```php
+$shadow->type( "movie" )
+       ->item( 15 )
+       ->social( "multary", 80, 3 )
+       ->track();
+```
+
+The `social` function's first parameter is now "multary", and it's value is `3`.
+
+Multary Relations Values will only accept an `Int`, `false`, or `null`. If the value is an `Int`, a relation will be formed between the user and object with the `Int` as the value for the "rating". If `false` or `null`, any type of relation (if any) will be destroyed.
+
+In the example above, this will store a relation in our database that User #80 "rated" Movie #15 as 3.
+
+**Getting Users Relation to Multary Object**
+```php
+$shadow->type( "movie" )
+       ->item( 15 )
+       ->social( "multary", 80 )
+       ->get();
+```
+
+Change the `track` function to the `get` function, and omit the third parameter `$value` from the `social` function and the users relation to the object will be returned.
+
+Sample Return (if the User #80 "voted" a 3 on Movie #15)
+```php
+3
+```
+Sample Return (if the User #80 has no relation with Movie #15)
+```php
+null
+```
+
+
+**Getting Multary Objects Social Value**
+```php
+$shadow->type( "movie" )
+       ->item( 15 )
+       ->social( "multary" )
+       ->get();
+```
+
+If you now omit the second parameter `$userID` from the `social` function and `get` the data, an int will be returned representing the ratings Movie #15 has
+
+Sample Return (81 "votes" totaling up to 253 with an average vote of 3)
+```php
+Array
+(
+    [num_votes] => 81
+    [total_votes_count] => 253
+    [avg_vote] => 0.3201
+)
+```
+
+**Getting Popular Multary Objects**
+```php
+$shadow->type( "comment" )
+       ->social( "multary" )
+       ->get();
+```
+
+If you now omit the `item` function (which specifies a specific object), a list of the popular `$itemType`'s ("movie" in this case) will be returned.
+
+Sample Return: 3 "Movies", stored in the `objects` array. `id` represents the Movies ID, `num_votes` is the number of "votes" casted, `total_votes_count` is the sum of all votes, `avg_vote` is the average vote across "movie" objects, and `rank` is the Social Rank of objects of type "movie" that have a Multary relation
+```php
+
+Array
+(
+    [count] => 3
+    [type] => movie
+    [0] => Array
+        (
+            [id] => 8
+            [num_votes] => 13
+            [total_votes_count] => 40
+            [avg_vote] => 0.325
+            [rank] => 0.316240517139895
+        )
+
+    [1] => Array
+        (
+            [id] => 4
+            [num_votes] => 4
+            [total_votes_count] => 13
+            [avg_vote] => 0.30769230769231
+            [rank] => 0.307698224688894
+        )
+
+    [2] => Array
+        (
+            [id] => 6
+            [num_votes] => 23
+            [total_votes_count] => 75
+            [avg_vote] => 0.30666666666667
+            [rank] => 0.307045870537496
+        )
+)
+```
