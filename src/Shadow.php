@@ -2,19 +2,7 @@
 
 class Shadow {
 
-    private $config = array(
-        'database' => array(
-            'connection' => array(
-                'host' => 'shadowjs.db.8856675.hostedresource.com', 
-                'user' => 'shadowjs', 
-                'pass' => 
-                'Ilsadie8!', 
-                'db' => 'shadowjs'
-            )
-        )
-    );
-
-    
+    private $config;
     private $directory;
     private $database;
     private $core;
@@ -37,8 +25,11 @@ class Shadow {
      */
     private function loadAssets() {
 
-        require ($this->directory . 'database.php');
-        require ($this->directory . 'core.php');
+        require( $this->directory . 'database.php' );
+        require( $this->directory . 'core.php' );
+		require( $this->directory . 'config.php' );
+
+		$this->config = $config;
 
         $this->core = new ShadowCore(new ShadowDB($this->config['database']));
     }
@@ -129,10 +120,10 @@ class Shadow {
 
     public function get($start=false, $amount = false) {
 
-        if($start){
+	    if($start){
 		    $limit = $start;
 		    if($amount){
-			    $limit .= ','.$amount;
+               $limit .= ','.$amount;
 		    }
 	    } else {
 		    $limit = false;
