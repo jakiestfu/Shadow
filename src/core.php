@@ -318,7 +318,7 @@ class ShadowCore {
              *
              */
 
-            $limit = ($build->limit) ? ' LIMIT 0,' . $build->limit : '';
+            $limit = ($build->limit) ? ' LIMIT ' . $build->limit : '';
 
             $sql = 'select *, ((`shadow_objects`.count - 1) / POWER( (HOUR(TIMEDIFF(NOW(),`shadow_objects`.timestamp))+2), 1.5) ) as rank from `shadow_objects` WHERE type=:type AND namespace = :namespace ORDER BY rank DESC' . $limit;
 
@@ -462,7 +462,7 @@ class ShadowCore {
              * http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
              */
 
-            $limit = ($build->limit) ? ' LIMIT 0,' . $build->limit : '';
+            $limit = ($build->limit) ? ' LIMIT ' . $build->limit : '';
 
             $sql = 'SELECT `shadow_objects`.*, ((positive + 1.9208) / (positive + negative) - 
                    1.96 * SQRT((positive * negative) / (positive + negative) + 0.9604) / 
@@ -609,7 +609,7 @@ class ShadowCore {
              * http://en.wikipedia.org/wiki/Bayesian_average
              */
 
-            $limit = ($build->limit) ? ' LIMIT 0,' . $build->limit : '';
+            $limit = ($build->limit) ? ' LIMIT ' . $build->limit : '';
 
             $sql = 'SELECT AVG(count) AS avg_num_votes, count/positive AS avg_rating FROM shadow_objects WHERE `shadow_objects`.operation="multary" AND count > 0 AND type=:type AND namespace=:namespace';
 
@@ -617,15 +617,18 @@ class ShadowCore {
 
             if ($averages) {
 
-                $objectSql = 'SELECT *, ((:avg_num_votes * :avg_rating) + (count * (count/positive) )) / (:avg_num_votes + count) as rank FROM shadow_objects WHERE operation = "multary" AND type=:type AND namespace=:namespace ORDER BY rank DESC';
+                $objectSql = 'SELECT *, ((:avg_num_votes * :avg_rating) + (count * (count/positive) )) / (:avg_num_votes + count) as rank FROM shadow_objects WHERE operation = "multary" AND type=:type AND namespace=:namespace ORDER BY rank DESC'.$limit;
 
                 $objects = $this->database->query($objectSql, array('avg_rating' => $averages[0]->avg_rating, 'avg_num_votes' => $averages[0]->avg_num_votes, 'type' => $build->type, 'namespace' => $build->namespace));
 
                 $temp = array();
 
+                $temp['count'] = count($objects);
+                $temp['type'] = $build->type;
+
                 if ($objects) {
                     foreach ($objects as $obj) {
-                        $temp[] = array('id' => $obj->object_id, 'num_votes' => $obj->count, 'total_votes_count' => $obj->positive, 'avg_vote' => ($obj->count / $obj->positive), 'rank' => $obj->rank);
+                        $temp['objects'][] = array('id' => $obj->object_id, 'num_votes' => $obj->count, 'total_votes_count' => $obj->positive, 'avg_vote' => ($obj->count / $obj->positive), 'rank' => $obj->rank);
                     }
                 }
                 return $temp;
