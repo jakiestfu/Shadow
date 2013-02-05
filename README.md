@@ -481,4 +481,4 @@ This algorithm is derived from Y Combinator's Hacker News.
 <img src="http://i.imgur.com/1ePMCtY.png">
 <hr />
 ### Multary Algorithm: <a href="http://en.wikipedia.org/wiki/Bayesian_average" target="_blank">Bayesian Average</a>
-Determines the Bayesian Average, the mean of a poptulation with data from the populations being used as a way to minimize deviations/randomness
+Determines the Bayesian Average, the mean of a population with data from the populations being used as a way to minimize deviations/randomness
