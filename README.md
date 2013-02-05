@@ -127,6 +127,15 @@ Sample Return (if `track` was called 180 times)
 180
 ```
 
+**Tracking Strings**
+```php
+$shadow->type( "post" )
+       ->item( 5 )
+       ->meta( "foo", "bar" )
+       ->track();
+```
+Passing a string as the second parameter to `meta` will set the data as you'd expect, and will be able to be retrieved as a string.
+
 ### Complex Operations
 Complex operations are for keeping a count of a multiple sub-attributes of an object. To define an attribute as a complex one, simply add a slash in the nave with it's respective value following after the key.
 
@@ -174,15 +183,6 @@ Array (
 ```
 
 In the above example, we can use the tracked information to deduce that there were significantly more females viewing Post ID #5 than there were males.
-
-**Tracking Strings**
-```php
-$shadow->type( "post" )
-       ->item( 5 )
-       ->meta( "foo", "bar" )
-       ->track();
-```
-Passing a string as the second parameter to `meta` will set the data as you'd expect, and will be able to be retrieved as a string.
 
 
 ## Relation Operations
