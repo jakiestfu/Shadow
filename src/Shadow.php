@@ -5,14 +5,16 @@ class Shadow {
     private $config = array(
         'database' => array(
             'connection' => array(
-                'host' => '', 
-                'user' => '', 
-                'pass' => '',
-                'db' => ''
+                'host' => 'shadowjs.db.8856675.hostedresource.com', 
+                'user' => 'shadowjs', 
+                'pass' => 
+                'Ilsadie8!', 
+                'db' => 'shadowjs'
             )
         )
     );
 
+    
     private $directory;
     private $database;
     private $core;
@@ -121,20 +123,25 @@ class Shadow {
 
         if ($this->enoughParams('track')) {
             $this->core->route($this->build, 'track');
-        } else {
-            die('Missing shit to track, yo');
         }
 
     }
 
-    public function get($limit = false) {
+    public function get($start=false, $amount = false) {
 
-        $this->build->limit = $limit;
+        if($start){
+		    $limit = $start;
+		    if($amount){
+			    $limit .= ','.$amount;
+		    }
+	    } else {
+		    $limit = false;
+	    }
+
+	    $this->build->limit = $limit;
 
         if ($this->enoughParams('get')) {
             return $this->core->route($this->build, 'get');
-        } else {
-            die('Missing shit to get, yo');
         }
 
     }
