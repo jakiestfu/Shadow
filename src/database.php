@@ -100,18 +100,22 @@ class ShadowDB {
         return $this->db_execute($sql, $params);
     }
 
-    public function update($what, $table, $where) {
+    public function update($what, $table, $where, $additionalParams=false) {
         $temp = array();
 
         foreach ($where as $k => $v) {
             $temp[] = $k . ' = :' . $k;
         }
 
+		if($additionalParams){
+			$where = array_merge($where, $additionalParams);
+		}
+
         $whereString = implode(' AND ', $temp);
 
         $sql = 'UPDATE `' . $table . '` SET ' . $what . ' WHERE ' . $whereString;
 
-        $this->db_execute($sql, $where);
+        return $this->db_execute($sql, $where);
     }
 
     public function remove($table, $where) {

@@ -28,12 +28,12 @@ class ShadowCore {
             $func[] = ($build->relation->type);
         }
 
-        $func[] = ($build->relation) ? 'relation' : 'attribute';
+        $func[] = ($build->relation) ? 'relation' : 'meta';
         $func[] = $action;
 
         $func = implode('_', $func);
-
-        if (method_exists($this, $func)) {
+		
+		if (method_exists($this, $func)) {
             return call_user_func(array($this, $func), $build);
         } else {
             echo 'Invalid! Function: ' . $func;
@@ -49,7 +49,7 @@ class ShadowCore {
         $data = array(
             'namespace' => $build->namespace, 
             'type' => $build->type, 
-            'object_key' => $build->attrKey, 
+            'object_key' => $build->metaKey, 
             'object_id' => $build->objectID
 		);
         if ($build->relation) {
@@ -77,17 +77,34 @@ class ShadowCore {
      *
      * Simple Meta Tracking
      */
-    private function simple_attribute_track($build) {
-
-        $params = $this->buildToParams($build);
+    private function simple_meta_track($build) {
+		if($build->metaKey=="impressions"){
+			//print_r($build);die();
+		}
+		$params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
 
-        if ($exists) {
-            $this->database->update('count = count+1', 'shadow_meta', $params);
+        $theUpdate = 'count = count+1';
+		if($build->metaValue){
+			$theUpdate = 'object_value = :object_value';
+		}
+		
+		if ($exists) {
+        	if($build->metaValue){
+        		if($build->metaValue != $exists[0]->object_value){
+					$this->database->update($theUpdate, 'shadow_meta', $params, array('object_value'=>$build->metaValue));
+        		}
+			} else {
+				$this->database->update($theUpdate, 'shadow_meta', $params);
+			}
         } else {
-            $params['count'] = 1;
-            $this->database->create('shadow_meta', $params);
+            if(!$build->metaValue){
+            	$params['count'] = 1;
+            } else {
+            	$params['object_value'] = $build->metaValue;
+            }
+            $this->database->create('shadow_meta', $params, array('object_value'=>$build->metaValue));
         }
 
     }
@@ -97,15 +114,20 @@ class ShadowCore {
      *  Simple Meta Retrieving
      * ------------------------------------------------------
      */
-    private function simple_attribute_get($build) {
+    private function simple_meta_get($build) {
 
         $params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
 
         $exists = count($exists) == 1 ? $exists[0] : $exists;
-
+		
+		if($exists->object_value){
+			return $exists->object_value;
+		}
+		
         if (intval($exists->count) === 0) {
+        	
             $params['parent'] = $exists->id;
             unset($params['object_key']);
 
@@ -113,14 +135,13 @@ class ShadowCore {
             if ($children) {
                 $temp = array();
                 foreach ($children as $obj) {
-                    $temp[$obj->object_key] = $obj->count;
+                    $temp[$obj->object_key] = $obj->object_value ? $obj->object_value : $obj->count;
                 }
                 return $temp;
             }
         }
-
-        return intval($exists->count);
-    }
+		return intval($exists->count);
+	}
 
     /*
      * ------------------------------------------------------
@@ -130,25 +151,32 @@ class ShadowCore {
      * Complex builds refer to tracking metadata that has a
      * parent. For isntance, you might want to track "gender",
      * but "gender" is useless to you. "Male" or "Female" is
-     * what you'd want. Your build attribute would look like
+     * what you'd want. Your build meta would look like
      * gender/male or gender/female
      */
-    private function complex_attribute_track($build) {
-
-        $params = $this->buildToParams($build);
+    private function complex_meta_track($build) {
+    	
+		$params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
-
+		
         if ($exists) {
 
-            $params['object_key'] = $build->attrVal;
+            $params['object_key'] = $build->metaComplexKey;
 
             $subExists = $this->database->get('*', 'shadow_meta', $params);
-
-            if ($subExists) {
+			
+			if ($subExists) {
                 $params['parent'] = $exists->id;
-                $this->database->update('count = count+1', 'shadow_meta', $params);
+				
+				if($build->metaValue){
+					if($build->metaValue != $subExists[0]->object_value){
+						$this->database->update('object_value = :object_value', 'shadow_meta', $params, array('object_value'=>$build->metaValue) );
+					}
+				} else {
+					$this->database->update('count = count+1', 'shadow_meta', $params);
+				}
             } else {
                 $params['parent'] = $exists->id;
                 $params['count'] = 1;
@@ -156,14 +184,18 @@ class ShadowCore {
             }
 
         } else {
-            $this->database->create('shadow_meta', $params);
+            echo $this->database->create('shadow_meta', $params);
 
             $lastID = $this->database->lastID();
 
-            $params['object_key'] = $build->attrVal;
+            $params['object_key'] = $build->metaComplexKey;
             $params['parent'] = $lastID;
-            $params['count'] = 1;
-
+			
+			if($build->metaValue){
+				$params['object_value'] = $build->metaValue;
+			} else {
+				$params['count'] = 1;
+			}
             $this->database->create('shadow_meta', $params);
         }
     }
@@ -173,15 +205,15 @@ class ShadowCore {
      *  Complex Meta Retrieving
      * ------------------------------------------------------
      */
-    private function complex_attribute_get($build) {
+    private function complex_meta_get($build) {
 
         $sql = 'SELECT tabTwo.* FROM `shadow_meta` AS tabOne, `shadow_meta` AS tabTwo WHERE tabOne.object_key = :object_key_one AND tabTwo.object_key = :object_key_two AND tabOne.id = tabTwo.parent AND tabTwo.namespace = :namespace AND tabTwo.type=:type GROUP BY tabTwo.id';
 
-        $exists = $this->database->query($sql, array('object_key_one' => $build->attrKey, 'object_key_two' => $build->attrVal, 'namespace' => $build->namespace, 'type' => $build->type, ));
+        $exists = $this->database->query($sql, array('object_key_one' => $build->metaKey, 'object_key_two' => $build->metaComplexKey, 'namespace' => $build->namespace, 'type' => $build->type, ));
         $exists = count($exists) == 1 ? $exists[0] : $exists;
 
         if ($exists) {
-            return intval($exists->count);
+        	return $exists->object_value ? $exists->object_value : intval($exists->count);
         }
         return 0;
 
