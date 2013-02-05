@@ -79,10 +79,12 @@ track()
 * Calling `track` records the data we've compiled from the functions above.
 
 ```php 
-get( $limit = false )
+get( $start = false, $amount=false )
 ```
 * Calling `get` retrieves the data we've compiled from the functions above.
 * `$limit`: Int - Limit the number of items returned
+* `get(4)`: Will return only 4 objects
+* `get(5,4)`: Will return only 4 objects starting from the 5th index
 
 # Usage
 
