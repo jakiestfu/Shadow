@@ -68,8 +68,7 @@ class Shadow {
      * Set Item Type
      */
     public function type($itemType) {
-    	//print_r($this->build);
-        $this->build->type = $itemType;
+    	$this->build->type = $itemType;
         return $this;
     }
 
@@ -90,6 +89,9 @@ class Shadow {
         }
 		
 		if($value){
+			if( is_array($value) ){
+				$value = json_encode($value);
+			}
         	$this->build->metaValue = $value;
         }
 		
@@ -147,6 +149,16 @@ class Shadow {
         if ($this->enoughParams('get')) {
             $toReturn = $this->core->route($this->build, 'get');
 			$this->initNamespace();
+			
+			if(!is_array($toReturn)){
+				$potentialJson = json_decode($toReturn, true);
+				if( json_last_error() == JSON_ERROR_NONE && is_array($potentialJson)){
+					return $potentialJson;
+				} else {
+					return $toReturn;
+				}
+			}
+			
 			return $toReturn;
         }
 
@@ -155,5 +167,4 @@ class Shadow {
     public function clearDataByType($type) {
         $this->core->clearDataByType($type);
     }
-
 }

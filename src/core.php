@@ -184,7 +184,7 @@ class ShadowCore {
             }
 
         } else {
-            echo $this->database->create('shadow_meta', $params);
+            $this->database->create('shadow_meta', $params);
 
             $lastID = $this->database->lastID();
 
