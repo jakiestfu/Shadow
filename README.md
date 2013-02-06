@@ -55,6 +55,24 @@ require( 'src/Shadow.php' );
 $shadow = new Shadow( 'MyAppName' );
 ```
 
+## Auto Tracking
+Shadow can automatically track objects for you.
+
+```php
+$shadow = new Shadow( 'MyAppName'. true );
+```
+
+By calling `true` in the second parameter during Instantiation, Shadow will execute `Shadow->private:globalTracks`, a function in which you can fill with your default tracks.
+
+Alternatively, you may pass a function as the second parameter to call your auto tracks:
+```php
+$shadow = new Shadow( 'MyAppName'. function( $shadow ){
+    // Shadow Tracks Here
+    $shadow->type( 'global' )->item( 'global' )->meta('impressions')->track();
+});
+```
+
+
 ## Public Functions
 ```php 
 type( $itemType ) 
