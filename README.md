@@ -12,7 +12,7 @@ If Google Analytics is an external stats tracker, consider Shadow to be an inter
 ## Idea
 Shadow is used within your system to keep track of "objects" meta data and users relations to them. An "object" represents anything in your application. For example, an "object" can be a Post, Image, or even a Comment. Imagine if everytime a user visited a post, you tracked the users gender. You'd be able to query that data later to say that "X% of the people that read this post are Male". That is what meta data in Shadow can be used for.
 
-By default, meta data is tracked as a **count**, meaning every time you track the data, a counter will increment. If you prefer to set the value to a string instead of a count, you can.
+By default, meta data for simple and complex operations are tracked as a **count**, meaning every time you track the data, a counter will increment. If you prefer to set the value to something else, you may set it as a string or an array.
 
 Relations are the users connection with an object. If you wanted to add a like button for pictures in your app, your object type might be "picture" and your operation would be "unary". Want to incorporate up/downvotes into your comments? With Shadow, all that is only a few lines of code.
 
@@ -65,7 +65,7 @@ type( $itemType )
 meta( $key, $value=false )
 ```
 * `$key`:  String - A key (as in key/value) to track data as (record data as. i.e. "impressions" or "404s")
-* `$value`: String - If you do not need to keep **count** of a properties occurence, and rather set static data, you may pass a string as the second aprameter
+* `$value`: String/Array - If you do not need to keep **count** of a properties occurence, and rather set static data, you may pass a string or array as the second parameter
 
 ```php 
 item( $itemID, $timestamp = false )
@@ -135,6 +135,15 @@ $shadow->type( "post" )
        ->track();
 ```
 Passing a string as the second parameter to `meta` will set the data as you'd expect, and will be able to be retrieved as a string.
+
+**Tracking Arrays**
+```php
+$shadow->type( "post" )
+       ->item( 5 )
+       ->meta( "foo", array( 'hello' => 'world!' ) )
+       ->track();
+```
+Passing an array as the second parameter to `meta` will set the data as you'd expect, and will be able to be retrieved as an array.
 
 ### Complex Operations
 Complex operations are for keeping a count of a multiple sub-attributes of an object. To define an attribute as a complex one, simply add a slash in the nave with it's respective value following after the key.
