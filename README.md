@@ -74,6 +74,9 @@ $shadow = new Shadow( 'MyAppName'. function( $shadow ){
 
 
 ## Public Functions
+
+All of the functions listed here are meant to be chained together to create what is called a Shadow "build"
+
 ```php 
 type( $itemType ) 
 ```
@@ -99,6 +102,11 @@ relation( $type, $user = false, $value = false )
 * `$value`: Varies - The `value` parameter takes in a Boolean or an Int. More information about when certain types of values are to be used can be found below.
 
 ```php 
+expires( $time )
+```
+* `$time`: String/Int - Adds an expiration date to the **meta data** tracked. This function is intended only for meta data and not relations.
+
+```php 
 track()
 ```
 * Calling `track` records the data we've compiled from the functions above.
@@ -110,6 +118,15 @@ get( $start = false, $amount=false )
 * `$limit`: Int - Limit the number of items returned
 * `get(4)`: Will return only 4 objects
 * `get(5,4)`: Will return only 4 objects starting from the 5th index
+
+<hr />
+
+All of the functions below are meant to be called by themselves, and do not chain the shadow object.
+
+```php 
+clearDataByType( $type )
+```
+* `$type`: The type of object to ***clear all data for***. Warning! This will clear *all data* for the given type, relations, objects, and meta data.
 
 # Usage
 
@@ -162,6 +179,22 @@ $shadow->type( "post" )
        ->track();
 ```
 Passing an array as the second parameter to `meta` will set the data as you'd expect, and will be able to be retrieved as an array.
+
+**Adding Expiration Dates**
+```php
+$shadow->type( "post" )
+       ->item( 5 )
+       ->meta( "foo" ),
+       ->expires( "3 days" )
+       ->track();
+```
+The `expires` function can be chained to set an expiration date on the data being tracked. This can be used for both simple and complex operations. **Note: ** Data may continuously tracked with the expires method chained. This explicitly means that data will be "reset" if data is tracked at a data past the initial "expires" date set on the object.
+
+The acceptable parameters are as follows:
+* `String`: "3 days" or "2 weeks", any appropriately formatted string that can be passed into `strtotime`
+* `String`: Unix Timestamp
+* `Int`: timestamp as an int
+
 
 ### Complex Operations
 Complex operations are for keeping a count of a multiple sub-attributes of an object. To define an attribute as a complex one, simply add a slash in the nave with it's respective value following after the key.
