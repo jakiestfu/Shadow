@@ -20,7 +20,7 @@
     
     <li> <a href="#usage">Usage</a> <ul>
         <li> <a href="#simple-operations">Meta Tracking: Simple Operations</a> </li>
-        <li> <a href="#additional-variations">Meta Tracking: Additional Variations</a> </li>
+        <li> <a href="#additional-variations">Meta Tracking: Strings, Arrays, and Expiries</a> </li>
         <li> <a href="#complex-operations">Meta Tracking: Complex Operations</a> </li>
         <li> <a href="#unary-operations">Relation Tracking: Unary</a> </li>
         <li> <a href="#binary-operations">Relation Tracking: Binary</a> </li>
