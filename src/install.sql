@@ -10,6 +10,7 @@ CREATE TABLE `shadow_meta` (
   `object_key` varchar(255) NOT NULL,
   `count` int(11) NOT NULL,
   `parent` int(11) default NULL,
+  `expires` timestamp NULL default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
