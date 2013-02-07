@@ -1,5 +1,36 @@
 <img src="http://i.imgur.com/6MVGm2A.png">
 
+## Table of Contents
+
+<ul>
+    <li> <a href="#readme">Intro</a> <ul>
+        <li> <a href="#what">What?</a> </li>
+        <li> <a href="#idea">Idea</a> </li>
+        <li> <a href="#use-cases">Use Cases</a> </li>
+        <li> <a href="#terminology">Terminology</a> </li>
+        </ul>
+    </li>
+    
+    <li> <a href="#the-code">The Code</a> <ul>
+        <li> <a href="#instantiation">Instantiation</a> </li>
+        <li> <a href="#auto-tracking">Auto Tracking</a> </li>
+        <li> <a href="#public-functions">Public Functions</a> </li>
+        </ul>
+    </li>
+    
+    <li> <a href="#usage">Usage</a> <ul>
+        <li> <a href="#simple-operations">Meta Tracking: Simple Operations</a> </li>
+        <li> <a href="#additional-variations">Meta Tracking: Additional Variations</a> </li>
+        <li> <a href="#complex-operations">Meta Tracking: Complex Operations</a> </li>
+        <li> <a href="#unary-operations">Relation Tracking: Unary</a> </li>
+        <li> <a href="#binary-operations">Relation Tracking: Binary</a> </li>
+        <li> <a href="#multary-operations">Relation Tracking: Multary</a> </li>
+        </ul>
+    </li>
+    <li> <a href="#popularity-algorithms">Popularity Algorithms</a> </li>
+</ul>
+
+
 ## What?
 Too often, information is collected from users but is never applied to your application to understand what type of users are doing what on your site.
 
@@ -18,7 +49,7 @@ Relations are the users connection with an object. If you wanted to add a like b
 
 
 
-## Use Cases?
+## Use Cases
 * Impression Tracking
 * User Demographic Analyzation
 * Database Sessions
@@ -32,7 +63,7 @@ Relations are the users connection with an object. If you wanted to add a like b
 * MySQL with PDO Support
 * PHP 5.3+
 
-## Terms
+## Terminology
 
 #### Meta Tracking
 * **Simple Operation**: A simple operation is when data is tracked on an objects attribute. For example, "impressions" or "session".
@@ -161,6 +192,9 @@ Sample Return (if `track` was called 180 times)
 ```php
 180
 ```
+
+### Additional Variations
+The following variations of data tracking are used for both Simple and Complex operations
 
 **Tracking Strings**
 ```php
