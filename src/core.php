@@ -78,13 +78,14 @@ class ShadowCore {
      * Simple Meta Tracking
      */
     private function simple_meta_track($build) {
-		if($build->metaKey=="impressions"){
-			//print_r($build);die();
-		}
+		
 		$params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
-
+        $exists = count($exists) == 1 ? $exists[0] : $exists;
+        
+        $exists = $this->filter_expired($exists);
+        
         $theUpdate = 'count = count+1';
 		if($build->metaValue){
 			$theUpdate = 'object_value = :object_value';
@@ -92,7 +93,7 @@ class ShadowCore {
 		
 		if ($exists) {
         	if($build->metaValue){
-        		if($build->metaValue != $exists[0]->object_value){
+        		if($build->metaValue != $exists->object_value){
 					$this->database->update($theUpdate, 'shadow_meta', $params, array('object_value'=>$build->metaValue));
         		}
 			} else {
@@ -104,7 +105,11 @@ class ShadowCore {
             } else {
             	$params['object_value'] = $build->metaValue;
             }
-            $this->database->create('shadow_meta', $params, array('object_value'=>$build->metaValue));
+            if($build->expires){
+	            $params['expires'] = $build->expires;
+            }
+            
+            $this->database->create('shadow_meta', $params);
         }
 
     }
@@ -119,7 +124,6 @@ class ShadowCore {
         $params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
-
         $exists = count($exists) == 1 ? $exists[0] : $exists;
 		
 		if($exists->object_value){
@@ -161,6 +165,8 @@ class ShadowCore {
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
 		
+		$exists = $this->filter_expired($exists);
+		
         if ($exists) {
 
             $params['object_key'] = $build->metaComplexKey;
@@ -184,8 +190,15 @@ class ShadowCore {
             }
 
         } else {
+        
+        	if($build->expires){
+	            $params['expires'] = $build->expires;
+            }
+        	
             $this->database->create('shadow_meta', $params);
-
+            
+            unset($params['expires']);
+            
             $lastID = $this->database->lastID();
 
             $params['object_key'] = $build->metaComplexKey;
@@ -261,6 +274,8 @@ class ShadowCore {
         // Get Object
         $objectExists = $this->database->get('*', 'shadow_objects', $params);
         $objectExists = count($objectExists) == 1 ? $objectExists[0] : $objectExists;
+
+        
 
         if (!$objectExists) {
 
@@ -387,7 +402,7 @@ class ShadowCore {
         // Get Object
         $objectExists = $this->database->get('*', 'shadow_objects', $params);
         $objectExists = count($objectExists) == 1 ? $objectExists[0] : $objectExists;
-
+        
         // Determine if Users currently negative or positive
         $countKey = $theVal === true ? 'positive' : ($theVal === false ? 'negative' : '');
 
@@ -669,7 +684,25 @@ class ShadowCore {
 
         }
     }
-
+    
+    /*
+	 * Determine if object has expired
+	 * If so, delete object and return false
+	 */
+    private function filter_expired( $object ){
+		if($object->expires){
+			if(time() > strtotime($object->expires)){
+				$this->database->remove('shadow_meta', array( 'id' => $object->id ));
+				if(!$object->count && !$object->object_value){
+					$this->database->remove('shadow_meta', array( 'parent' => $object->id ));
+				}
+				$object = false;
+			}
+		}
+		return $object;
+    }
+    
+    
     /*
      * Clear Data by Object Type
      */

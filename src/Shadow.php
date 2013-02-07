@@ -137,6 +137,28 @@ class Shadow {
     }
 
     /*
+     * Expiration Date
+     */
+    public function expires($when){
+	    
+	    $english = array(
+	    	'second', 'minute', 'hour', 'day', 'week', 'month', 'year'
+	    );
+	    
+	    $expires = $when;
+	    preg_match_all("/([0-9]+\s)(second|minute|hour|day|week|month|year)/", strtolower($when), $matches);
+	    if($matches[1][0] && $matches[2][0]){
+		   $expires = strtotime("+".trim($matches[1][0])." ".trim($matches[2][0])."s");
+	    } elseif(is_string($when)){
+		    $expires = strtotime($when);
+	    }
+	    
+	    $this->build->expires = date("Y-m-d H:i:s", $expires);
+	    
+	    return $this;
+    }
+
+    /*
      * Execute Actions
      */
     public function track() {
