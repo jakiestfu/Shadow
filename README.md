@@ -78,7 +78,7 @@ Relations are the users connection with an object. If you wanted to add a like b
 #The Code
 
 ##Instantiation
-Require Shadow in your script, and initialize it. The only paramater of Shadow is a String. It represents your application namespace as to avoid object collision within your database.
+Require Shadow in your script, and initialize it. The only required paramater of Shadow is a String. It represents your application namespace as to avoid object collision within your database.
 
 ```php
 require( 'src/Shadow.php' );
@@ -90,14 +90,14 @@ $shadow = new Shadow( 'MyAppName' );
 Shadow can automatically track objects for you.
 
 ```php
-$shadow = new Shadow( 'MyAppName'. true );
+$shadow = new Shadow( 'MyAppName', true );
 ```
 
 By calling `true` in the second parameter during Instantiation, Shadow will execute `Shadow->private:globalTracks`, a function in which you can fill with your default tracks.
 
 Alternatively, you may pass a function as the second parameter to call your auto tracks:
 ```php
-$shadow = new Shadow( 'MyAppName'. function( $shadow ){
+$shadow = new Shadow( 'MyAppName', function( $shadow ){
     // Shadow Tracks Here
     $shadow->type( 'global' )->item( 'global' )->meta('impressions')->track();
 });
