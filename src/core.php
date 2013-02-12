@@ -697,6 +697,6 @@ class ShadowCore {
      */
     function __destruct() {
         $sql = 'DELETE FROM `shadow_meta` WHERE `expires` > '.date("Y-m-d H:i:s");
-        $this->database->query($sql);
+        $this->database->execute($sql, array());
     }
 }
