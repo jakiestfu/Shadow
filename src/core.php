@@ -84,8 +84,6 @@ class ShadowCore {
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
         
-        $exists = $this->filter_expired($exists);
-        
         $theUpdate = 'count = count+1';
 		if($build->metaValue){
 			$theUpdate = 'object_value = :object_value';
@@ -165,9 +163,7 @@ class ShadowCore {
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
 		
-		$exists = $this->filter_expired($exists);
-		
-        if ($exists) {
+	if ($exists) {
 
             $params['object_key'] = $build->metaComplexKey;
 
@@ -686,24 +682,6 @@ class ShadowCore {
     }
     
     /*
-	 * Determine if object has expired
-	 * If so, delete object and return false
-	 */
-    private function filter_expired( $object ){
-		if($object->expires){
-			if(time() > strtotime($object->expires)){
-				$this->database->remove('shadow_meta', array( 'id' => $object->id ));
-				if(!$object->count && !$object->object_value){
-					$this->database->remove('shadow_meta', array( 'parent' => $object->id ));
-				}
-				$object = false;
-			}
-		}
-		return $object;
-    }
-    
-    
-    /*
      * Clear Data by Object Type
      */
     public function clearDataByType($type) {
@@ -714,4 +692,11 @@ class ShadowCore {
         $this->database->execute($sql, array($type));
     }
 
+    /*
+     * Delete expired meta
+     */
+    function __destruct() {
+        $sql = 'DELETE FROM `shadow_meta` WHERE `expires` > '.date("Y-m-d H:i:s");
+        $this->database->query($sql);
+    }
 }
