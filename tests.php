@@ -1,6 +1,6 @@
 <?PHP
 
-require('src/Shadow.php');
+require 'src/Shadow.php';
 
 $time_start = microtime(true);
 

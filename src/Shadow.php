@@ -40,9 +40,9 @@ class Shadow {
      */
     private function loadAssets() {
 
-        require( $this->directory . 'database.php' );
-        require( $this->directory . 'core.php' );
-        require( $this->directory . 'config.php' );
+        require ($this->directory . 'database.php' );
+        require ($this->directory . 'core.php' );
+        require ($this->directory . 'config.php' );
 
         $this->config = $config;
 

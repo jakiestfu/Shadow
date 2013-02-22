@@ -724,10 +724,7 @@ class ShadowCore {
         }
     }
     
-<<<<<<< HEAD
-=======
-    
->>>>>>> Updates
+
     /*
      * Clear Data by Object Type
      */
@@ -740,18 +737,11 @@ class ShadowCore {
     }
 
     /*
-<<<<<<< HEAD
      * Delete expired meta
-=======
      * Auto clean on script end (after HTTP headers sent)
->>>>>>> Updates
      */
     function __destruct() {
         $sql = 'DELETE FROM `shadow_meta` WHERE `expires` > '.date("Y-m-d H:i:s");
         $this->database->execute($sql, array());
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Updates
