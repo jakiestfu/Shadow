@@ -1,49 +1,720 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Shadow : An internal analytics engine used to track meta data and user relations for objects in your application" />
+	<head>
+		<title>Shadow</title>
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic,400,700,800' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="static/css/shadow.css">
+	</head>
+	<body>
+		<a href="https://github.com/jakiestfu/Shadow"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+		<div class="nav" style="display:none">
+			<ul>
+				<li><b>Intro</b></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Use Cases</a></li>
+				<li><a href="#">Requirements</a></li>
+				<li><a href="#">Involvement</a></li>
+				<li><a href="#">Basics</a></li>
+				<li><a href="#">General Operations</a></li>
+				<li><a href="#">Complex Operations</a></li>
+				<li><a href="#">Social</a></li>
+				<li><a href="#">Unary Operations</a></li>
+				<li><a href="#">Binary Operations</a></li>
+				<li><a href="#">Multary Operations</a></li>
+				
+				<li><b>Code</b></li>
+				<li><a href="#">Instantiation</a></li>
+				
+				<li><b>Simple/Complex</b></li>
+				<li><a href="#">Tracking Breakdown</a></li>
+				<li><a href="#">Simple Tracking</a></li>
+				<li><a href="#">Complex Tracking</a></li>
+				<li><a href="#">Uses</a></li>
+				
+				<li><b>Social</b></li>
+				<li><a href="#">Tracking Breakdown</a></li>
+				<li><a href="#">Unary Operations</a></li>
+				<li><a href="#">Binary Operations</a></li>
+				<li><a href="#">Multary Operations</a></li>
+				<li><a href="#">Uses</a></li>
+			</ul>
+		</div>
+		
+		<div class="container">
+			
+			<header>
+				<a href="#">Shadow</a>
+				<div class="top-cut"></div>
+				<div class="bottom-cut"></div>
+			</header>
+			
+			<hr class="top">
+			<div class="content"><p><a href="https://a248.e.akamai.net/camo.github.com/e5bd0c28f6362c5f83772753e7dfd5b50edf6517/687474703a2f2f692e696d6775722e636f6d2f364d56476d32412e706e67" target="_blank"><img src="https://a248.e.akamai.net/camo.github.com/e5bd0c28f6362c5f83772753e7dfd5b50edf6517/687474703a2f2f692e696d6775722e636f6d2f364d56476d32412e706e67" style="max-width:100%;"></a></p>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+<h2>
+<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="mini-icon mini-icon-link"></span></a>Table of Contents</h2>
 
-    <title>Shadow</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/jakiestfu/Shadow">View on GitHub</a>
-
-          <h1 id="project_title">Shadow</h1>
-          <h2 id="project_tagline">An internal analytics engine used to track meta data and user relations for objects in your application</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/jakiestfu/Shadow/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/jakiestfu/Shadow/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>text</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Shadow maintained by <a href="https://github.com/jakiestfu">jakiestfu</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+<ul>
+<li> <a href="#readme">Intro</a> <ul>
+<li> <a href="#what">What?</a> </li>
+        <li> <a href="#idea">Idea</a> </li>
+        <li> <a href="#use-cases">Use Cases</a> </li>
+        <li> <a href="#terminology">Terminology</a> </li>
+        </ul>
+</li>
     
+    <li> <a href="#the-code">The Code</a> <ul>
+<li> <a href="#instantiation">Instantiation</a> </li>
+        <li> <a href="#auto-tracking">Auto Tracking</a> </li>
+        <li> <a href="#public-functions">Public Functions</a> </li>
+        </ul>
+</li>
+    
+    <li> <a href="#usage">Usage</a> <ul>
+<li> <a href="#simple-operations">Meta Tracking: Simple Operations</a> </li>
+        <li> <a href="#additional-variations">Meta Tracking: Strings, Arrays, and Expiries</a> </li>
+        <li> <a href="#complex-operations">Meta Tracking: Complex Operations</a> </li>
+        <li> <a href="#unary-operations">Relation Tracking: Unary</a> </li>
+        <li> <a href="#binary-operations">Relation Tracking: Binary</a> </li>
+        <li> <a href="#multary-operations">Relation Tracking: Multary</a> </li>
+        </ul>
+</li>
+    <li> <a href="#popularity-algorithms">Popularity Algorithms</a> </li>
+</ul><h2>
+<a name="what" class="anchor" href="#what"><span class="mini-icon mini-icon-link"></span></a>What?</h2>
 
-  </body>
+<p>Too often, information is collected from users but is never applied to your application to understand what type of users are doing what on your site.</p>
+
+<p>Too often, great content may be shared on your site, but your means of determining what is popular or relevant to your users is a challenge.</p>
+
+<p>Enter Shadow, an analytics engine for developers that integrates seamlessly into your current system.</p>
+
+<p>If Google Analytics is an external stats tracker, consider Shadow to be an internal one.</p>
+
+<h2>
+<a name="idea" class="anchor" href="#idea"><span class="mini-icon mini-icon-link"></span></a>Idea</h2>
+
+<p>Shadow is used within your system to keep track of "objects" meta data and users relations to them. An "object" represents anything in your application. For example, an "object" can be a Post, Image, or even a Comment. Imagine if everytime a user visited a post, you tracked the users gender. You'd be able to query that data later to say that "X% of the people that read this post are Male". That is what meta data in Shadow can be used for.</p>
+
+<p>By default, meta data for simple and complex operations are tracked as a <strong>count</strong>, meaning every time you track the data, a counter will increment. If you prefer to set the value to something else, you may set it as a string or an array.</p>
+
+<p>Relations are the users connection with an object. If you wanted to add a like button for pictures in your app, your object type might be "picture" and your operation would be "unary". Want to incorporate up/downvotes into your comments? With Shadow, all that is only a few lines of code.</p>
+
+<h2>
+<a name="use-cases" class="anchor" href="#use-cases"><span class="mini-icon mini-icon-link"></span></a>Use Cases</h2>
+
+<ul>
+<li>Impression Tracking</li>
+<li>User Demographic Analyzation</li>
+<li>Database Sessions</li>
+<li>IP Blocking</li>
+<li>Popularity</li>
+<li>Likes or Favorites</li>
+<li>Upvoting + Downvoting</li>
+<li>Star Ratings</li>
+</ul><h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="mini-icon mini-icon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>MySQL with PDO Support</li>
+<li>PHP 5.3+</li>
+</ul><h2>
+<a name="terminology" class="anchor" href="#terminology"><span class="mini-icon mini-icon-link"></span></a>Terminology</h2>
+
+<h4>
+<a name="meta-tracking" class="anchor" href="#meta-tracking"><span class="mini-icon mini-icon-link"></span></a>Meta Tracking</h4>
+
+<ul>
+<li>
+<strong>Simple Operation</strong>: A simple operation is when data is tracked on an objects attribute. For example, "impressions" or "session".</li>
+<li>
+<strong>Complex Operations</strong>: A Complex operation is when data is tracked on an objects sub-attributes. For example, "gender/male". It is an attribute or property in which there can be multiple values for (i.e. male or female).</li>
+</ul><h4>
+<a name="relation-tracking" class="anchor" href="#relation-tracking"><span class="mini-icon mini-icon-link"></span></a>Relation Tracking</h4>
+
+<ul>
+<li>
+<strong>Unary Operation</strong>: This is an item that can only have one other state, such as a single upvote or a "like". Great for giving posts a fun element of competition.</li>
+<li>
+<strong>Binary Operaions</strong>: This is an item that can be voted up, voted down. Great for comments or content. </li>
+<li>
+<strong>Multary Operations</strong>: This is an item that can have a variable rating, for instance a star system 1-5 or a movie rating 1-10.</li>
+</ul><hr /><h1>
+<a name="the-code" class="anchor" href="#the-code"><span class="mini-icon mini-icon-link"></span></a>The Code</h1>
+
+<h2>
+<a name="instantiation" class="anchor" href="#instantiation"><span class="mini-icon mini-icon-link"></span></a>Instantiation</h2>
+
+<p>Require Shadow in your script, and initialize it. The only required paramater of Shadow is a String. It represents your application namespace as to avoid object collision within your database.</p>
+
+<div class="highlight"><pre><code><span class="k">require</span><span class="p">(</span> <span class="s1">'src/Shadow.php'</span> <span class="p">);</span>
+
+<span class="nv">$shadow</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shadow</span><span class="p">(</span> <span class="s1">'MyAppName'</span> <span class="p">);</span>
+</code></pre></div>
+
+<h2>
+<a name="auto-tracking" class="anchor" href="#auto-tracking"><span class="mini-icon mini-icon-link"></span></a>Auto Tracking</h2>
+
+<p>Shadow can automatically track objects for you.</p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shadow</span><span class="p">(</span> <span class="s1">'MyAppName'</span><span class="p">,</span> <span class="k">true</span> <span class="p">);</span>
+</code></pre></div>
+
+<p>By calling <code>true</code> in the second parameter during Instantiation, Shadow will execute <code>Shadow-&gt;private:globalTracks</code>, a function in which you can fill with your default tracks.</p>
+
+<p>Alternatively, you may pass a function as the second parameter to call your auto tracks:</p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Shadow</span><span class="p">(</span> <span class="s1">'MyAppName'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span> <span class="nv">$shadow</span> <span class="p">){</span>
+    <span class="c1">// Shadow Tracks Here</span>
+    <span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s1">'global'</span> <span class="p">)</span><span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="s1">'global'</span> <span class="p">)</span><span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span><span class="s1">'impressions'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<h2>
+<a name="public-functions" class="anchor" href="#public-functions"><span class="mini-icon mini-icon-link"></span></a>Public Functions</h2>
+
+<p>All of the functions listed here are meant to be chained together to create what is called a Shadow "build"</p>
+
+<div class="highlight"><pre><code><span class="nx">type</span><span class="p">(</span> <span class="nv">$itemType</span> <span class="p">)</span> 
+</code></pre></div>
+
+<ul>
+<li>
+<code>$itemType</code>: String - The type of item you will be recording data for, i.e. "Post", "Comment", "Picture", etc.</li>
+</ul><div class="highlight"><pre><code><span class="nx">meta</span><span class="p">(</span> <span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="o">=</span><span class="k">false</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<code>$key</code>:  String - A key (as in key/value) to track data as (record data as. i.e. "impressions" or "404s")</li>
+<li>
+<code>$value</code>: String/Array - If you do not need to keep <strong>count</strong> of a properties occurence, and rather set static data, you may pass a string or array as the second parameter</li>
+</ul><div class="highlight"><pre><code><span class="nx">item</span><span class="p">(</span> <span class="nv">$itemID</span><span class="p">,</span> <span class="nv">$timestamp</span> <span class="o">=</span> <span class="k">false</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<code>$itemID</code>: String - A unique identifier for the object you would like to track. i.e. (setting 5 as the <code>itemID</code> with "post" set as the <code>itemType</code> infers that we are referencing Post ID #5). Int ID's will work best in this field.</li>
+<li>
+<code>$timestamp</code>: Int - If tracking the <code>relation</code> of an object, the objects timestamp must be passed as an Int to accurately determine the Popularity of the object</li>
+</ul><div class="highlight"><pre><code><span class="nx">relation</span><span class="p">(</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$user</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$value</span> <span class="o">=</span> <span class="k">false</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<code>$type</code>: String - Defines the relation type. Accepted values are <code>"unary"</code>, <code>"binary"</code>, or <code>"multary"</code>
+</li>
+<li>
+<code>$user</code>: Int - The ID of the user that will be relating to our object</li>
+<li>
+<code>$value</code>: Varies - The <code>value</code> parameter takes in a Boolean or an Int. More information about when certain types of values are to be used can be found below.</li>
+</ul><div class="highlight"><pre><code><span class="nx">expires</span><span class="p">(</span> <span class="nv">$time</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<code>$time</code>: String/Int - Adds an expiration date to the <strong>meta data</strong> tracked. This function is intended only for meta data and not relations.</li>
+</ul><div class="highlight"><pre><code><span class="nx">track</span><span class="p">()</span>
+</code></pre></div>
+
+<ul>
+<li>Calling <code>track</code> records the data we've compiled from the functions above.</li>
+</ul><div class="highlight"><pre><code><span class="nx">get</span><span class="p">(</span> <span class="nv">$start</span> <span class="o">=</span> <span class="k">false</span><span class="p">,</span> <span class="nv">$amount</span><span class="o">=</span><span class="k">false</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>Calling <code>get</code> retrieves the data we've compiled from the functions above.</li>
+<li>
+<code>$limit</code>: Int - Limit the number of items returned</li>
+<li>
+<code>get(4)</code>: Will return only 4 objects</li>
+<li>
+<code>get(5,4)</code>: Will return only 4 objects starting from the 5th index</li>
+</ul><hr><p>All of the functions below are meant to be called by themselves, and do not chain the shadow object.</p>
+
+<div class="highlight"><pre><code><span class="nx">clearDataByType</span><span class="p">(</span> <span class="nv">$type</span> <span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<code>$type</code>: The type of object to <strong><em>clear all data for</em></strong>. Warning! This will clear <em>all data</em> for the given type, relations, objects, and meta data.</li>
+</ul><hr /><h1>
+<a name="usage" class="anchor" href="#usage"><span class="mini-icon mini-icon-link"></span></a>Usage</h1>
+
+<h2>
+<a name="meta-operations" class="anchor" href="#meta-operations"><span class="mini-icon mini-icon-link"></span></a>Meta Operations</h2>
+
+<h3>
+<a name="simple-operations" class="anchor" href="#simple-operations"><span class="mini-icon mini-icon-link"></span></a>Simple Operations</h3>
+
+<p>Simple operations are for tracking a single attribute of an object.</p>
+
+<p>If the second parameter of <code>meta</code> is a string, it will be set as the value rather than keep count.</p>
+
+<p><strong>Tracking</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"impressions"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>In this example, we are tracking "impressions" on Post ID #5. Everytime this is called, a count of impressions will be incremented.</p>
+
+<p><strong>Getting</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"impressions"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Change the <code>track</code> function to the <code>get</code> function and in this example, the count of impressions will be returned.</p>
+
+<p>Sample Return (if <code>track</code> was called 180 times)</p>
+
+<div class="highlight"><pre><code><span class="mi">180</span>
+</code></pre></div>
+
+<h3>
+<a name="additional-variations" class="anchor" href="#additional-variations"><span class="mini-icon mini-icon-link"></span></a>Additional Variations</h3>
+
+<p>The following variations of data tracking are used for both Simple and Complex operations</p>
+
+<p><strong>Tracking Strings</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"foo"</span><span class="p">,</span> <span class="s2">"bar"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Passing a string as the second parameter to <code>meta</code> will set the data as you'd expect, and will be able to be retrieved as a string.</p>
+
+<p><strong>Tracking Arrays</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"foo"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'hello'</span> <span class="o">=&gt;</span> <span class="s1">'world!'</span> <span class="p">)</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Passing an array as the second parameter to <code>meta</code> will set the data as you'd expect, and will be able to be retrieved as an array.</p>
+
+<p><strong>Adding Expiration Dates</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"foo"</span> <span class="p">),</span>
+       <span class="o">-&gt;</span><span class="na">expires</span><span class="p">(</span> <span class="s2">"3 days"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>The <code>expires</code> function can be chained to set an expiration date on the data being tracked. This can be used for both simple and complex operations. **Note: ** Data may continuously tracked with the expires method chained. This explicitly means that data will be "reset" if data is tracked at a data past the initial "expires" date set on the object.</p>
+
+<p>The acceptable parameters are as follows:</p>
+
+<ul>
+<li>
+<code>String</code>: "3 days" or "2 weeks", any appropriately formatted string that can be passed into <code>strtotime</code>
+</li>
+<li>
+<code>String</code>: Unix Timestamp</li>
+<li>
+<code>Int</code>: timestamp as an int</li>
+</ul><h3>
+<a name="complex-operations" class="anchor" href="#complex-operations"><span class="mini-icon mini-icon-link"></span></a>Complex Operations</h3>
+
+<p>Complex operations are for keeping a count of a multiple sub-attributes of an object. To define an attribute as a complex one, simply add a slash in the nave with it's respective value following after the key.</p>
+
+<p><strong>Tracking</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"gender/male"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>In this example, we are tracking the users "gender" (specifically, "male") on Post ID #5. If you have the users information, it may be beneficial to record the users meta information and associate it with on object so you can see what types of people are doing what on your website.</p>
+
+<p><strong>Getting single sub-attribute</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"gender/male"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Change the <code>track</code> function to the <code>get</code> function and in this example, the count of males will be returned.</p>
+
+<p>Sample Return</p>
+
+<div class="highlight"><pre><code><span class="mi">7</span>
+</code></pre></div>
+
+<p><strong>Getting all sub-attributes</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">meta</span><span class="p">(</span> <span class="s2">"gender"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Remove the specified sub-attribute from your attribute function and all of the sub-attributes for "gender" will be returned:</p>
+
+<p>Sample Return</p>
+
+<div class="highlight"><pre><code><span class="k">Array</span> <span class="p">(</span>
+    <span class="p">[</span><span class="nx">male</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="p">[</span><span class="nx">female</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">20</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>In the above example, we can use the tracked information to deduce that there were significantly more females viewing Post ID #5 than there were males.</p>
+
+<h2>
+<a name="relation-operations" class="anchor" href="#relation-operations"><span class="mini-icon mini-icon-link"></span></a>Relation Operations</h2>
+
+<p>Relation Operations are used to track the relationship between a user and an object in a social setting.</p>
+
+<h3>
+<a name="unary-operations" class="anchor" href="#unary-operations"><span class="mini-icon mini-icon-link"></span></a>Unary Operations</h3>
+
+<p>When a user on <a href="https://www.facebook.com/" target="_blank">Facebook</a> "Likes" a post, the form a Unary relationship with that post, <strong>a relationship in which there can only be one other state than the default state</strong>. The user can either "Like" the post or not.</p>
+
+<p><strong>Tracking</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"unary"</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="k">true</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>The <code>relation</code> function takes in three parameters, a relation type, the user ID, and the value for the relation.</p>
+
+<p>Unary Relations may only have a value of <code>True</code> or <code>False</code>. If <code>True</code>, a relation will be formed if one does not exist. If <code>False</code>, the relation will be destroyed.</p>
+
+<p>In the example above, this will store a relation in our database that User #80 "Likes" Post #5.</p>
+
+<p><strong>Getting Users Relation to Unary Object</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"unary"</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Change the <code>track</code> function to the <code>get</code> function, and omit the third parameter <code>$value</code> from the <code>relation</code> function and the users relation to the object will be returned.</p>
+
+<p>Sample Return (if the User #80 "Liked" Post #5)</p>
+
+<div class="highlight"><pre><code><span class="k">true</span>
+</code></pre></div>
+
+<p><strong>Getting Unary Objects Social Value</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"unary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the second parameter <code>$userID</code> from the <code>relation</code> function ange <code>get</code> the data, an int will be returned representing the number of "Likes" Post #5 has.</p>
+
+<p>Sample Return (15 likes)</p>
+
+<div class="highlight"><pre><code><span class="mi">15</span>
+</code></pre></div>
+
+<p><strong>Getting Popular Unary Objects</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"post"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"unary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the <code>item</code> function (which specifies a specific object), a list of the popular <code>$itemType</code>'s ("post" in this case) will be returned.</p>
+
+<p>Sample Return: 3 "Posts", stored in the <code>objects</code> array. <code>id</code> represents the Posts ID, <code>count</code> is the "number of likes", and <code>rank</code> is the Social Rank of objects of type "post" that have a Unary relation</p>
+
+<div class="highlight"><pre><code><span class="k">Array</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">post</span>
+    <span class="p">[</span><span class="nx">objects</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+                    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">20</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">1.69941166289984</span>
+                <span class="p">)</span>
+
+            <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">7</span>
+                    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">38</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">1.37037037037037</span>
+                <span class="p">)</span>
+
+            <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+                    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">8</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.875</span>
+                <span class="p">)</span>
+
+        <span class="p">)</span>
+
+<span class="p">)</span>
+</code></pre></div>
+
+<h3>
+<a name="binary-operations" class="anchor" href="#binary-operations"><span class="mini-icon mini-icon-link"></span></a>Binary Operations</h3>
+
+<p>When a user "upvotes" or "downvotes" a submission on <a href="http://reddit.com" target="-blank">Reddit</a>, the user forms a Binary relationship with that submission, <strong>a relationship in which there can only be one of two states other than the default state</strong>. The user can either "Upvote" or "Downvote" the post. In the following examples, we will use "Comments" as a <code>$postType</code>.</p>
+
+<p><strong>Tracking</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"comment"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">10</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"binary"</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="k">true</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>The <code>relation</code> function's first parameter is now "binary", and it's value is <code>True</code>.</p>
+
+<p>Binary Relations Values will only accept <code>True</code>, <code>False</code>, or <code>null</code>. If <code>True</code>, a "positive" relation will be formed between the user and the object. If <code>False</code>, a "negative" relation will be formed. If <code>null</code>, any type of relation (if any) will be destroyed.</p>
+
+<p>In the example above, this will store a relation in our database that User #80 "Upvoted" Comment #10. If the third parameter in <code>relation</code> were <code>false</code>, User #80 would have "Downvoted" Comment #10;</p>
+
+<p><strong>Getting Users Relation to Binary Object</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"comment"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">10</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"binary"</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Change the <code>track</code> function to the <code>get</code> function, and omit the third parameter <code>$value</code> from the <code>relation</code> function and the users relation to the object will be returned.</p>
+
+<p>Sample Return (if the User #80 "Downvoted" Comment #10)</p>
+
+<div class="highlight"><pre><code><span class="k">false</span>
+</code></pre></div>
+
+<p>Sample Return (if the User #80 "Upvoted" Comment #10)</p>
+
+<div class="highlight"><pre><code><span class="k">true</span>
+</code></pre></div>
+
+<p>Sample Return (if the User #80 has no relation with Comment #10)</p>
+
+<div class="highlight"><pre><code><span class="k">null</span>
+</code></pre></div>
+
+<p><strong>Getting Binary Objects Social Value</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"comment"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">10</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"binary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the second parameter <code>$userID</code> from the <code>relation</code> function ange <code>get</code> the data, an array of positive and negative votes will be shown for Comment # 10</p>
+
+<p>Sample Return (9 "Upvotes" and 3 "Downvotes")</p>
+
+<div class="highlight"><pre><code><span class="k">Array</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="nx">positive</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="p">[</span><span class="nx">negative</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><strong>Getting Popular Binary Objects</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"comment"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"binary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the <code>item</code> function (which specifies a specific object), a list of the popular <code>$itemType</code>'s ("comment" in this case) will be returned.</p>
+
+<p>Sample Return: 3 "Comments", stored in the <code>objects</code> array. <code>id</code> represents the Posts ID, <code>positive</code> is the number of "upvotes", <code>negative</code> is the number of "downvotes" and <code>rank</code> is the Social Rank of objects of type "comment" that have a Binary relation</p>
+
+<div class="highlight"><pre><code><span class="k">Array</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">comment</span>
+    <span class="p">[</span><span class="nx">objects</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="o">-</span><span class="nx">idfs</span>
+                    <span class="p">[</span><span class="nx">positive</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">14</span>
+                    <span class="p">[</span><span class="nx">negative</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.366543291473893</span>
+                <span class="p">)</span>
+
+            <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="o">-</span><span class="nx">id</span>
+                    <span class="p">[</span><span class="nx">positive</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">14</span>
+                    <span class="p">[</span><span class="nx">negative</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">7</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.2845286548008661</span>
+                <span class="p">)</span>
+
+            <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="o">-</span><span class="nx">idfs</span>
+                    <span class="p">[</span><span class="nx">positive</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">21</span>
+                    <span class="p">[</span><span class="nx">negative</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">94</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.1965433291273893</span>
+                <span class="p">)</span>
+        <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h3>
+<a name="multary-operations" class="anchor" href="#multary-operations"><span class="mini-icon mini-icon-link"></span></a>Multary Operations</h3>
+
+<p>When a user rates a movie on <a href="http://www.imdb.com/" target="_blank">IMDB</a>, the user forms a Multary relationship with that movie, <strong>a relationship in which there can be more than two states other than the default state</strong>. The user can "rate" a movie as 3, 7, or even 20. In the following examples, we will use "Movies" as a <code>$postType</code>.</p>
+
+<p><strong>Tracking</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"movie"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">15</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"multary"</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">track</span><span class="p">();</span>
+</code></pre></div>
+
+<p>The <code>relation</code> function's first parameter is now "multary", and it's value is <code>3</code>.</p>
+
+<p>Multary Relations Values will only accept an <code>Int</code>, <code>false</code>, or <code>null</code>. If the value is an <code>Int</code>, a relation will be formed between the user and object with the <code>Int</code> as the value for the "rating". If <code>false</code> or <code>null</code>, any type of relation (if any) will be destroyed.</p>
+
+<p>In the example above, this will store a relation in our database that User #80 "rated" Movie #15 as 3.</p>
+
+<p><strong>Getting Users Relation to Multary Object</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"movie"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">15</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"multary"</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Change the <code>track</code> function to the <code>get</code> function, and omit the third parameter <code>$value</code> from the <code>relation</code> function and the users relation to the object will be returned.</p>
+
+<p>Sample Return (if the User #80 "voted" a 3 on Movie #15)</p>
+
+<div class="highlight"><pre><code><span class="mi">3</span>
+</code></pre></div>
+
+<p>Sample Return (if the User #80 has no relation with Movie #15)</p>
+
+<div class="highlight"><pre><code><span class="k">null</span>
+</code></pre></div>
+
+<p><strong>Getting Multary Objects Social Value</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"movie"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span> <span class="mi">15</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"multary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the second parameter <code>$userID</code> from the <code>relation</code> function and <code>get</code> the data, an int will be returned representing the ratings Movie #15 has</p>
+
+<p>Sample Return (81 "votes" totaling up to 253 with an average vote of 3)</p>
+
+<div class="highlight"><pre><code><span class="k">Array</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">81</span>
+    <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">253</span>
+    <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.3201</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p><strong>Getting Popular Multary Objects</strong></p>
+
+<div class="highlight"><pre><code><span class="nv">$shadow</span><span class="o">-&gt;</span><span class="na">type</span><span class="p">(</span> <span class="s2">"comment"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">relation</span><span class="p">(</span> <span class="s2">"multary"</span> <span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+
+<p>If you now omit the <code>item</code> function (which specifies a specific object), a list of the popular <code>$itemType</code>'s ("movie" in this case) will be returned.</p>
+
+<p>Sample Return: 3 "Movies", stored in the <code>objects</code> array. <code>id</code> represents the Movies ID, <code>num_votes</code> is the number of "votes" casted, <code>total_votes_count</code> is the sum of all votes, <code>avg_vote</code> is the average vote across "movie" objects, and <code>rank</code> is the Social Rank of objects of type "movie" that have a Multary relation</p>
+
+<div class="highlight"><pre><code>
+<span class="k">Array</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">movie</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">8</span>
+            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
+            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">40</span>
+            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.325</span>
+            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.316240517139895</span>
+        <span class="p">)</span>
+
+    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
+            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30769230769231</span>
+            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307698224688894</span>
+        <span class="p">)</span>
+
+    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+        <span class="p">(</span>
+            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">6</span>
+            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">23</span>
+            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">75</span>
+            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30666666666667</span>
+            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307045870537496</span>
+        <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h2>
+<a name="popularity-algorithms" class="anchor" href="#popularity-algorithms"><span class="mini-icon mini-icon-link"></span></a>Popularity Algorithms</h2>
+
+<h3>
+<a name="unary-algorithm-custom" class="anchor" href="#unary-algorithm-custom"><span class="mini-icon mini-icon-link"></span></a>Unary Algorithm: Custom</h3>
+
+<pre><code><code>Popularity = (likes – 1) / (time_in_hrs + 2)^1.5
+</code></code></pre>
+
+<p>This algorithm is derived from Y Combinator's Hacker News.</p>
+
+<hr><h3>
+<a name="binary-algorithm-lower-bound-of-wilson-score-confidence-interval-for-a-bernoulli-parameter" class="anchor" href="#binary-algorithm-lower-bound-of-wilson-score-confidence-interval-for-a-bernoulli-parameter"><span class="mini-icon mini-icon-link"></span></a>Binary Algorithm: <a href="http://www.evanmiller.org/how-not-to-sort-by-average-rating.html" target="_blank">Lower bound of Wilson Score Confidence Interval for a Bernoulli Parameter</a>
+</h3>
+
+<p><a href="https://a248.e.akamai.net/camo.github.com/341078446b2a10f3f4a312c6685965c392343c38/687474703a2f2f692e696d6775722e636f6d2f3165504d4374592e706e67" target="_blank"><img src="https://a248.e.akamai.net/camo.github.com/341078446b2a10f3f4a312c6685965c392343c38/687474703a2f2f692e696d6775722e636f6d2f3165504d4374592e706e67" style="max-width:100%;"></a></p>
+
+<hr><h3>
+<a name="multary-algorithm-bayesian-average" class="anchor" href="#multary-algorithm-bayesian-average"><span class="mini-icon mini-icon-link"></span></a>Multary Algorithm: <a href="http://en.wikipedia.org/wiki/Bayesian_average" target="_blank">Bayesian Average</a>
+</h3>
+
+<p>Determines the Bayesian Average, the mean of a population with data from the populations being used as a way to minimize deviations/randomness</p></div>
+			
+		</div>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script type="text/javascript">
+			
+			$(document).ready(function(){
+				
+				
+				
+			});
+			
+		</script>
+	</body>
 </html>
