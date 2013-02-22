@@ -164,7 +164,7 @@ class Shadow {
     public function track() {
         
         if ($this->enoughParams('track')) {
-            $this->core->route($this->build, 'track');
+        	$this->core->route($this->build, 'track');
             $this->initNamespace();
         }
     }
@@ -203,20 +203,34 @@ class Shadow {
     public function clearDataByType($type) {
         $this->core->clearDataByType($type);
     }
-    
-    
+
+
     /*
      * Global Tracks
      * 
      * Usage is the same.
      * 
      * $this->type()->item()->meta()->track();
+     *
+     * Defaults are client details providing quick tracking of popular links by client
+     *  - IPv4/IPv6 or hostname when available
+     *  - Browser agent string
+     *  - Timestamp of request
+     *  - Query string
      * 
      */
     private function globalTracks(){
-        
-        $shadow = $this;
-        
+
+        $toTrack = array(
+            'Visitor' => (empty($_SERVER['REMOTE_HOST'])) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_HOST'],
+            'Agent'   => $_SERVER['HTTP_USER_AGENT'],
+            'Time'    => $_SERVER['REQUEST_TIME'],
+            'Query'   => $_SERVER['QUERY_STRING']
+        );
+
+        $this->type( "global" )
+             ->item( "global" )
+             ->meta( "impressions", $toTrack)
+             ->track();
     }
-    
 }

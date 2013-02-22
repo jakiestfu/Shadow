@@ -58,7 +58,7 @@ class ShadowDB {
 
     }
 
-    public function query($q, $p) {
+    public function query($q, $p = array()) {
         return $this->db_query($q, $p);
     }
 
@@ -96,7 +96,7 @@ class ShadowDB {
         $vals = implode(', ', $temp['vals']);
 
         $sql = 'INSERT INTO `' . $table . '` (' . $keys . ') VALUES (' . $vals . ')';
-
+        
         return $this->db_execute($sql, $params);
     }
 
@@ -107,9 +107,9 @@ class ShadowDB {
             $temp[] = $k . ' = :' . $k;
         }
 
-		if($additionalParams){
-			$where = array_merge($where, $additionalParams);
-		}
+        if($additionalParams){
+            $where = array_merge($where, $additionalParams);
+        }
 
         $whereString = implode(' AND ', $temp);
 

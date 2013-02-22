@@ -8,6 +8,7 @@ CREATE TABLE `shadow_meta` (
   `type` varchar(255) default NULL,
   `object_id` varchar(255) NOT NULL,
   `object_key` varchar(255) NOT NULL,
+  `object_value` text,
   `count` int(11) NOT NULL,
   `parent` int(11) default NULL,
   `expires` timestamp NULL default NULL,

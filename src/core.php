@@ -32,8 +32,8 @@ class ShadowCore {
         $func[] = $action;
 
         $func = implode('_', $func);
-		
-		if (method_exists($this, $func)) {
+
+    if (method_exists($this, $func)) {
             return call_user_func(array($this, $func), $build);
         } else {
             echo 'Invalid! Function: ' . $func;
@@ -51,7 +51,7 @@ class ShadowCore {
             'type' => $build->type, 
             'object_key' => $build->metaKey, 
             'object_id' => $build->objectID
-		);
+        );
         if ($build->relation) {
 
             unset($data['object_key']);
@@ -78,6 +78,7 @@ class ShadowCore {
      * Simple Meta Tracking
      */
     private function simple_meta_track($build) {
+<<<<<<< HEAD
 		
 		$params = $this->buildToParams($build);
 
@@ -97,6 +98,27 @@ class ShadowCore {
 			} else {
 				$this->database->update($theUpdate, 'shadow_meta', $params);
 			}
+=======
+
+    $params = $this->buildToParams($build);
+
+        $exists = $this->database->get('*', 'shadow_meta', $params);
+        $exists = count($exists) == 1 ? $exists[0] : $exists;
+
+        $theUpdate = 'count = count+1';
+        if($build->metaValue){
+            $theUpdate = 'object_value = :object_value';
+        }
+
+        if ($exists) {
+            if($build->metaValue){
+                if($build->metaValue != $exists->object_value){
+                    $this->database->update($theUpdate, 'shadow_meta', $params, array('object_value'=>$build->metaValue));
+                }
+            } else {
+                $this->database->update($theUpdate, 'shadow_meta', $params);
+            }
+>>>>>>> Updates
         } else {
             if(!$build->metaValue){
             	$params['count'] = 1;
@@ -104,7 +126,11 @@ class ShadowCore {
             	$params['object_value'] = $build->metaValue;
             }
             if($build->expires){
+<<<<<<< HEAD
 	            $params['expires'] = $build->expires;
+=======
+                $params['expires'] = $build->expires;
+>>>>>>> Updates
             }
             
             $this->database->create('shadow_meta', $params);
@@ -123,13 +149,13 @@ class ShadowCore {
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
-		
-		if($exists->object_value){
-			return $exists->object_value;
-		}
-		
+
+        if($exists->object_value){
+            return $exists->object_value;
+        }
+
         if (intval($exists->count) === 0) {
-        	
+
             $params['parent'] = $exists->id;
             unset($params['object_key']);
 
@@ -142,8 +168,8 @@ class ShadowCore {
                 return $temp;
             }
         }
-		return intval($exists->count);
-	}
+        return intval($exists->count);
+    }
 
     /*
      * ------------------------------------------------------
@@ -157,28 +183,33 @@ class ShadowCore {
      * gender/male or gender/female
      */
     private function complex_meta_track($build) {
-    	
-		$params = $this->buildToParams($build);
+
+        $params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
+<<<<<<< HEAD
 		
 	if ($exists) {
+=======
+
+        if ($exists) {
+>>>>>>> Updates
 
             $params['object_key'] = $build->metaComplexKey;
 
             $subExists = $this->database->get('*', 'shadow_meta', $params);
-			
-			if ($subExists) {
+
+            if ($subExists) {
                 $params['parent'] = $exists->id;
-				
-				if($build->metaValue){
-					if($build->metaValue != $subExists[0]->object_value){
-						$this->database->update('object_value = :object_value', 'shadow_meta', $params, array('object_value'=>$build->metaValue) );
-					}
-				} else {
-					$this->database->update('count = count+1', 'shadow_meta', $params);
-				}
+
+                if($build->metaValue){
+                    if($build->metaValue != $subExists[0]->object_value){
+                        $this->database->update('object_value = :object_value', 'shadow_meta', $params, array('object_value'=>$build->metaValue) );
+                    }
+                } else {
+                    $this->database->update('count = count+1', 'shadow_meta', $params);
+                }
             } else {
                 $params['parent'] = $exists->id;
                 $params['count'] = 1;
@@ -186,6 +217,7 @@ class ShadowCore {
             }
 
         } else {
+<<<<<<< HEAD
         
         	if($build->expires){
 	            $params['expires'] = $build->expires;
@@ -195,16 +227,27 @@ class ShadowCore {
             
             unset($params['expires']);
             
+=======
+
+            if($build->expires){
+                $params['expires'] = $build->expires;
+            }
+
+            $this->database->create('shadow_meta', $params);
+
+            unset($params['expires']);
+
+>>>>>>> Updates
             $lastID = $this->database->lastID();
 
             $params['object_key'] = $build->metaComplexKey;
             $params['parent'] = $lastID;
-			
-			if($build->metaValue){
-				$params['object_value'] = $build->metaValue;
-			} else {
-				$params['count'] = 1;
-			}
+
+            if($build->metaValue){
+                $params['object_value'] = $build->metaValue;
+            } else {
+                $params['count'] = 1;
+            }
             $this->database->create('shadow_meta', $params);
         }
     }
@@ -681,6 +724,10 @@ class ShadowCore {
         }
     }
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> Updates
     /*
      * Clear Data by Object Type
      */
@@ -693,10 +740,18 @@ class ShadowCore {
     }
 
     /*
+<<<<<<< HEAD
      * Delete expired meta
+=======
+     * Auto clean on script end (after HTTP headers sent)
+>>>>>>> Updates
      */
     function __destruct() {
         $sql = 'DELETE FROM `shadow_meta` WHERE `expires` > '.date("Y-m-d H:i:s");
         $this->database->execute($sql, array());
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Updates
