@@ -41,6 +41,7 @@
 			</header>
 			
 			<hr class="top">
+			
 			<div class="content">
 			
 			<div class="share">
@@ -649,36 +650,38 @@
 
 <p>Sample Return: 3 "Movies", stored in the <code>objects</code> array. <code>id</code> represents the Movies ID, <code>num_votes</code> is the number of "votes" casted, <code>total_votes_count</code> is the sum of all votes, <code>avg_vote</code> is the average vote across "movie" objects, and <code>rank</code> is the Social Rank of objects of type "movie" that have a Multary relation</p>
 
-<div class="highlight"><pre><code>
-<span class="k">Array</span>
+<div class="highlight"><pre><code><span class="k">Array</span>
 <span class="p">(</span>
     <span class="p">[</span><span class="nb">count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
     <span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">movie</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+    <span class="p">[</span><span class="nx">objects</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
         <span class="p">(</span>
-            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">8</span>
-            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
-            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">40</span>
-            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.325</span>
-            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.316240517139895</span>
-        <span class="p">)</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">8</span>
+                    <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
+                    <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">40</span>
+                    <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.325</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.316240517139895</span>
+                <span class="p">)</span>
 
-    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
-        <span class="p">(</span>
-            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
-            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
-            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
-            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30769230769231</span>
-            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307698224688894</span>
-        <span class="p">)</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+                    <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">4</span>
+                    <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">13</span>
+                    <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30769230769231</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307698224688894</span>
+                <span class="p">)</span>
 
-    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
-        <span class="p">(</span>
-            <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">6</span>
-            <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">23</span>
-            <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">75</span>
-            <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30666666666667</span>
-            <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307045870537496</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">6</span>
+                    <span class="p">[</span><span class="nx">num_votes</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">23</span>
+                    <span class="p">[</span><span class="nx">total_votes_count</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">75</span>
+                    <span class="p">[</span><span class="nx">avg_vote</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.30666666666667</span>
+                    <span class="p">[</span><span class="nx">rank</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mf">0.307045870537496</span>
+                <span class="p">)</span>
         <span class="p">)</span>
 <span class="p">)</span>
 </code></pre></div>
