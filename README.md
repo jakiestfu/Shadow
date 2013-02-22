@@ -81,7 +81,7 @@ Relations are the users connection with an object. If you wanted to add a like b
 Require Shadow in your script, and initialize it. The only required paramater of Shadow is a String. It represents your application namespace as to avoid object collision within your database.
 
 ```php
-require( 'src/Shadow.php' );
+require 'src/Shadow.php';
 
 $shadow = new Shadow( 'MyAppName' );
 ```
