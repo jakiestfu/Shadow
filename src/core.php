@@ -78,29 +78,8 @@ class ShadowCore {
      * Simple Meta Tracking
      */
     private function simple_meta_track($build) {
-<<<<<<< HEAD
-		
-		$params = $this->buildToParams($build);
 
-        $exists = $this->database->get('*', 'shadow_meta', $params);
-        $exists = count($exists) == 1 ? $exists[0] : $exists;
-        
-        $theUpdate = 'count = count+1';
-		if($build->metaValue){
-			$theUpdate = 'object_value = :object_value';
-		}
-		
-		if ($exists) {
-        	if($build->metaValue){
-        		if($build->metaValue != $exists->object_value){
-					$this->database->update($theUpdate, 'shadow_meta', $params, array('object_value'=>$build->metaValue));
-        		}
-			} else {
-				$this->database->update($theUpdate, 'shadow_meta', $params);
-			}
-=======
-
-    $params = $this->buildToParams($build);
+	    $params = $this->buildToParams($build);
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
@@ -118,7 +97,6 @@ class ShadowCore {
             } else {
                 $this->database->update($theUpdate, 'shadow_meta', $params);
             }
->>>>>>> Updates
         } else {
             if(!$build->metaValue){
             	$params['count'] = 1;
@@ -126,11 +104,7 @@ class ShadowCore {
             	$params['object_value'] = $build->metaValue;
             }
             if($build->expires){
-<<<<<<< HEAD
-	            $params['expires'] = $build->expires;
-=======
                 $params['expires'] = $build->expires;
->>>>>>> Updates
             }
             
             $this->database->create('shadow_meta', $params);
@@ -188,14 +162,8 @@ class ShadowCore {
 
         $exists = $this->database->get('*', 'shadow_meta', $params);
         $exists = count($exists) == 1 ? $exists[0] : $exists;
-<<<<<<< HEAD
-		
-	if ($exists) {
-=======
 
         if ($exists) {
->>>>>>> Updates
-
             $params['object_key'] = $build->metaComplexKey;
 
             $subExists = $this->database->get('*', 'shadow_meta', $params);
@@ -217,19 +185,8 @@ class ShadowCore {
             }
 
         } else {
-<<<<<<< HEAD
-        
-        	if($build->expires){
-	            $params['expires'] = $build->expires;
-            }
-        	
-            $this->database->create('shadow_meta', $params);
-            
-            unset($params['expires']);
-            
-=======
-
-            if($build->expires){
+	        
+	        if($build->expires){
                 $params['expires'] = $build->expires;
             }
 
@@ -237,7 +194,6 @@ class ShadowCore {
 
             unset($params['expires']);
 
->>>>>>> Updates
             $lastID = $this->database->lastID();
 
             $params['object_key'] = $build->metaComplexKey;
@@ -720,7 +676,6 @@ class ShadowCore {
                 return $temp;
 
             }
-
         }
     }
     
