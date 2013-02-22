@@ -231,7 +231,12 @@ pre{
 			
 .content p:first-child img{
 	display:none;
-}		
+}
+
+.share{
+	text-align:center;
+}
+
 /*
  * Syntax Highlighting
  */
