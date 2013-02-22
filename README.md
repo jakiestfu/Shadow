@@ -547,37 +547,39 @@ If you now omit the `item` function (which specifies a specific object), a list 
 
 Sample Return: 3 "Movies", stored in the `objects` array. `id` represents the Movies ID, `num_votes` is the number of "votes" casted, `total_votes_count` is the sum of all votes, `avg_vote` is the average vote across "movie" objects, and `rank` is the Social Rank of objects of type "movie" that have a Multary relation
 ```php
-
 Array
 (
     [count] => 3
     [type] => movie
-    [0] => Array
+    [objects] => Array
         (
-            [id] => 8
-            [num_votes] => 13
-            [total_votes_count] => 40
-            [avg_vote] => 0.325
-            [rank] => 0.316240517139895
-        )
-
-    [1] => Array
-        (
-            [id] => 4
-            [num_votes] => 4
-            [total_votes_count] => 13
-            [avg_vote] => 0.30769230769231
-            [rank] => 0.307698224688894
-        )
-
-    [2] => Array
-        (
-            [id] => 6
-            [num_votes] => 23
-            [total_votes_count] => 75
-            [avg_vote] => 0.30666666666667
-            [rank] => 0.307045870537496
-        )
+		    [0] => Array
+		        (
+		            [id] => 8
+		            [num_votes] => 13
+		            [total_votes_count] => 40
+		            [avg_vote] => 0.325
+		            [rank] => 0.316240517139895
+		        )
+		
+		    [1] => Array
+		        (
+		            [id] => 4
+		            [num_votes] => 4
+		            [total_votes_count] => 13
+		            [avg_vote] => 0.30769230769231
+		            [rank] => 0.307698224688894
+		        )
+		
+		    [2] => Array
+		        (
+		            [id] => 6
+		            [num_votes] => 23
+		            [total_votes_count] => 75
+		            [avg_vote] => 0.30666666666667
+		            [rank] => 0.307045870537496
+		        )
+	    )
 )
 ```
 
