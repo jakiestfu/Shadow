@@ -75,9 +75,9 @@ Relations are the users connection with an object. If you wanted to add a like b
 * **Multary Operations**: This is an item that can have a variable rating, for instance a star system 1-5 or a movie rating 1-10.
 
 
-#The Code
+# The Code
 
-##Instantiation
+## Instantiation
 Require Shadow in your script, and initialize it. The only required paramater of Shadow is a String. It represents your application namespace as to avoid object collision within your database.
 
 ```php
